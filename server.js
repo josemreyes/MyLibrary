@@ -1,6 +1,11 @@
 if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config();
+  require("dotenv").load();
 }
+
+// if (process.env.NODE_ENV !== "production") {
+//   // require("dotenv").config();
+//   require("dotenv").config();
+// }
 
 const express = require("express");
 const app = express();
@@ -11,6 +16,7 @@ const mongoose = require("mongoose");
 //Setting the routes
 const indexRouter = require("./routes/index");
 const authorRouter = require("./routes/authors");
+const bookRouter = require("./routes/books");
 
 //middlewares
 app.set("view engine", "ejs");
@@ -26,7 +32,7 @@ const dbPath = process.env.DATABASE_URL;
 //global flags sets for eliminate mongo flags
 mongoose.set("useNewUrlParser", true);
 mongoose.set("useUnifiedTopology", true);
-mongoose.set("useCreateIndex", true);
+// mongoose.set("useCreateIndex", true);
 
 //connect to mongo
 mongoose.connect(dbPath);
@@ -34,10 +40,11 @@ mongoose.connect(dbPath);
 const db = mongoose.connection;
 
 db.on("error", (error) => console.error(error));
-db.once("open", (error) => console.log("Connected to Moongose"));
+db.once("open", () => console.log("Connected to Moongose"));
 
 app.use("/", indexRouter);
 app.use("/authors", authorRouter);
+app.use("/books", bookRouter);
 
 app.listen(process.env.PORT || 3000, () => {
   console.log("App listening on port 3000!");
