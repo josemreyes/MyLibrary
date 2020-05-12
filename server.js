@@ -10,6 +10,7 @@ if (process.env.NODE_ENV !== "production") {
 const express = require("express");
 const app = express();
 const expressLayouts = require("express-ejs-layouts");
+const bodyParser = require("body-parser");
 const path = require("path");
 const mongoose = require("mongoose");
 
@@ -24,18 +25,17 @@ app.set("views", path.join(__dirname, "/views"));
 app.set("layout", "layouts/layout");
 app.use(expressLayouts);
 app.use(express.static("public"));
-app.use(express.json());
-app.use(express.urlencoded({ limit: "10mb", extended: false }));
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: false }));
 
 //DB config
-const dbPath = process.env.DATABASE_URL;
+// const dbPath = process.env.DATABASE_URL;
 //global flags sets for eliminate mongo flags
 mongoose.set("useNewUrlParser", true);
 mongoose.set("useUnifiedTopology", true);
 // mongoose.set("useCreateIndex", true);
 
 //connect to mongo
-mongoose.connect(dbPath);
+mongoose.connect(process.env.DATABASE_URL);
 
 const db = mongoose.connection;
 
