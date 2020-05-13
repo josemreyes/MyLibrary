@@ -1,4 +1,4 @@
 .env
 node_modules
 dbFile.txt
-public/uploads
+img
